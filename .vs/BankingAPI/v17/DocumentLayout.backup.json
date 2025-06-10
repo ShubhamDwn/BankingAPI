@@ -1,0 +1,184 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\C#\\Repos\\BankingAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\endpoints\\statementendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:endpoints\\statementendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\models\\statementresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:models\\statementresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\endpoints\\signupendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:endpoints\\signupendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\endpoints\\homeendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:endpoints\\homeendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\models\\homeresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:models\\homeresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\endpoints\\loginendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:endpoints\\loginendpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|e:\\c#\\repos\\bankingapi\\bankingapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{489AC3DB-B0BA-4E46-A7D1-C63C85572AF8}|BankingAPI.csproj|solutionrelative:bankingapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAApwBQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T08:29:52.846Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "StatementResponse.cs",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\Models\\StatementResponse.cs",
+              "RelativeDocumentMoniker": "Models\\StatementResponse.cs",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\Models\\StatementResponse.cs",
+              "RelativeToolTip": "Models\\StatementResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T06:50:38.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "HomeEndpoints.cs",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\HomeEndpoints.cs",
+              "RelativeDocumentMoniker": "EndPoints\\HomeEndpoints.cs",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\HomeEndpoints.cs",
+              "RelativeToolTip": "EndPoints\\HomeEndpoints.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAADwv0IAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T06:00:39.436Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeResponse.cs",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\Models\\HomeResponse.cs",
+              "RelativeDocumentMoniker": "Models\\HomeResponse.cs",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\Models\\HomeResponse.cs",
+              "RelativeToolTip": "Models\\HomeResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T05:57:08.139Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SignupEndpoints.cs",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\SignupEndpoints.cs",
+              "RelativeDocumentMoniker": "EndPoints\\SignupEndpoints.cs",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\SignupEndpoints.cs",
+              "RelativeToolTip": "EndPoints\\SignupEndpoints.cs",
+              "ViewState": "AgIAAFkAAAAAAAAAAAAgwG0AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T11:10:20.776Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LoginEndpoints.cs",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\LoginEndpoints.cs",
+              "RelativeDocumentMoniker": "EndPoints\\LoginEndpoints.cs",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\LoginEndpoints.cs",
+              "RelativeToolTip": "EndPoints\\LoginEndpoints.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T11:09:53.352Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BankingAPI.csproj",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\BankingAPI.csproj",
+              "RelativeDocumentMoniker": "BankingAPI.csproj",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\BankingAPI.csproj",
+              "RelativeToolTip": "BankingAPI.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-07T10:03:52.008Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "StatementEndpoints.cs",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\StatementEndpoints.cs",
+              "RelativeDocumentMoniker": "EndPoints\\StatementEndpoints.cs",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\StatementEndpoints.cs",
+              "RelativeToolTip": "EndPoints\\StatementEndpoints.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAApwEgAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T06:58:19.494Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAcwEgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T05:27:13.897Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "E:\\C#\\Repos\\BankingAPI\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Properties\\launchSettings.json",
+              "ToolTip": "E:\\C#\\Repos\\BankingAPI\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-07T08:41:12.229Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
