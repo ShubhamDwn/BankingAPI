@@ -78,3 +78,4 @@ E:\C#\Repos\BankingAPI\obj\Debug\net9.0\BankingAPI.pdb
 E:\C#\Repos\BankingAPI\obj\Debug\net9.0\BankingAPI.genruntimeconfig.cache
 E:\C#\Repos\BankingAPI\obj\Debug\net9.0\ref\BankingAPI.dll
 E:\C#\Repos\BankingApi\bin\Debug\net9.0\ServiceStack.Text.dll
+E:\C#\Repos\BankingApi\obj\Debug\net9.0\BankingAPI.sourcelink.json

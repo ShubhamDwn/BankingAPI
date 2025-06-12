@@ -18,6 +18,7 @@ app.MapSignupEndpoints();
 app.MapForgotPasswordEndpoints();  
 app.MapHomeEndpoints(builder.Configuration);
 app.MapStatementEndpoints(app.Configuration);
+app.MapBeneficiaryEndpoints();
 
 
 

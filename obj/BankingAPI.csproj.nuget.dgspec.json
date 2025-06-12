@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "E:\\C#\\Repos\\BankingAPI\\BankingAPI.csproj": {}
+    "E:\\C#\\Repos\\BankingApi\\BankingAPI.csproj": {}
   },
   "projects": {
-    "E:\\C#\\Repos\\BankingAPI\\BankingAPI.csproj": {
+    "E:\\C#\\Repos\\BankingApi\\BankingAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\C#\\Repos\\BankingAPI\\BankingAPI.csproj",
+        "projectUniqueName": "E:\\C#\\Repos\\BankingApi\\BankingAPI.csproj",
         "projectName": "BankingAPI",
-        "projectPath": "E:\\C#\\Repos\\BankingAPI\\BankingAPI.csproj",
+        "projectPath": "E:\\C#\\Repos\\BankingApi\\BankingAPI.csproj",
         "packagesPath": "C:\\Users\\Aishwarya\\.nuget\\packages\\",
         "outputPath": "E:\\C#\\Repos\\BankingAPI\\obj\\",
         "projectStyle": "PackageReference",

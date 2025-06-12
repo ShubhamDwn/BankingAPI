@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "BankingAPI.Models.SignupRequest",
+        "Type": "BankingAPI.Models.ForgotPasswordRequest",
         "IsRequired": true
       }
     ],
@@ -54,6 +54,82 @@
       {
         "Name": "request",
         "Type": "BankingAPI.Models.SignupRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BankingAPI.Endpoints.BeneficiaryEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapBeneficiaryEndpoints\u003Eb__0_0",
+    "RelativePath": "api/beneficiaries",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "accountNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BankingAPI.Endpoints.BeneficiaryEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapBeneficiaryEndpoints\u003Eb__0_1",
+    "RelativePath": "api/beneficiaries",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "BankingAPI.Models.AddBeneficiaryRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BankingAPI.Endpoints.BeneficiaryEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapBeneficiaryEndpoints\u003Eb__0_2",
+    "RelativePath": "api/beneficiaries",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "accountNumber",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

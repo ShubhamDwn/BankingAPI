@@ -9,7 +9,7 @@ namespace BankingAPI.Endpoints
     {
         public static void MapStatementEndpoints(this IEndpointRouteBuilder app, IConfiguration config)
         {
-            // Get Account Types
+            // 🔹 Get Account Types
             app.MapGet("/api/statement/account-types/{customerId:int}", async (int customerId) =>
             {
                 var results = new List<string>();
@@ -21,13 +21,17 @@ namespace BankingAPI.Endpoints
 
                     using var cmd = new SqlCommand("App_AccountList", conn)
                     {
-                        CommandType = CommandType.StoredProcedure
+                        CommandType = CommandType.StoredProcedure,
+                        CommandTimeout=200
                     };
                     cmd.Parameters.AddWithValue("@CustomerId", customerId);
 
                     using var reader = await cmd.ExecuteReaderAsync();
                     while (await reader.ReadAsync())
-                        results.Add(reader.GetString(0));
+                    {
+                        if (!reader.IsDBNull(0))
+                            results.Add(reader.GetString(0));
+                    }
 
                     return Results.Ok(results);
                 }
@@ -37,7 +41,7 @@ namespace BankingAPI.Endpoints
                 }
             });
 
-            // Get Customer Accounts
+            // 🔹 Get Customer Accounts by Type
             app.MapGet("/api/statement/accounts", async (
                 IConfiguration config,
                 [FromQuery] int customerId,
@@ -50,15 +54,15 @@ namespace BankingAPI.Endpoints
                     var accounts = new List<AccountModel>();
 
                     var accountTypeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-                    {
-                        { "SHARE", 1 },
-                        { "SAVING", 2 },
-                        { "FIXED", 3 },
-                        { "LOAN", 4 },
-                        { "RECCURING", 5 },
-                        { "PIGMYAGENT", 6 },
-                        { "PIGMY", 7 }
-                    };
+        {
+            { "SHARE", 1 },
+            { "SAVING", 2 },
+            { "FIXED", 3 },
+            { "LOAN", 4 },
+            { "RECCURING", 5 },
+            { "PIGMYAGENT", 6 },
+            { "PIGMY", 7 }
+        };
 
                     if (!accountTypeMap.TryGetValue(accountType.Trim().ToUpper(), out int acType))
                         return Results.BadRequest($"Invalid account type: '{accountType}'");
@@ -68,8 +72,7 @@ namespace BankingAPI.Endpoints
 
                     using var cmd = new SqlCommand("App_GetCustomerAccount", conn)
                     {
-                        CommandType = CommandType.StoredProcedure,
-                        CommandTimeout = 200
+                        CommandType = CommandType.StoredProcedure
                     };
 
                     cmd.Parameters.AddWithValue("@CustomerId", customerId);
@@ -82,14 +85,20 @@ namespace BankingAPI.Endpoints
                     {
                         var account = new AccountModel
                         {
+                            PrimaryId = reader["PrimaryId"] != DBNull.Value ? Convert.ToInt32(reader["PrimaryId"]) : -1,
+                            SubSchemeId = reader["SubSchemeId"] != DBNull.Value ? Convert.ToInt32(reader["SubSchemeId"]) : 0,
+                            PigmyAgentId = reader["PigmyAgentId"] != DBNull.Value ? Convert.ToInt32(reader["PigmyAgentId"]) : 0,
                             AccountNumber = reader["AccountNumber"]?.ToString(),
-                            AccountName = reader["AccountName"]?.ToString(),
-                            AccountType = reader["AccountType"]?.ToString(),
+                            OldAccountNumber = reader["OldAccountNumber"]?.ToString(),
+                            CustomerId = reader["CustomerId"] != DBNull.Value ? Convert.ToInt32(reader["CustomerId"]) : 0,
+                            OpeningDate = reader["OpeningDate"] != DBNull.Value ? Convert.ToDateTime(reader["OpeningDate"]) : null,
                             Balance = reader["Balance"] != DBNull.Value ? Convert.ToDecimal(reader["Balance"]) : 0,
-                            OpeningDate = reader["OpeningDate"] != DBNull.Value ? Convert.ToDateTime(reader["OpeningDate"]) : DateTime.MinValue,
-                            BranchName = reader["BranchName"]?.ToString(),
-                            Status = reader["Status"]?.ToString()
+                            Closed = reader["Closed"] != DBNull.Value && Convert.ToBoolean(reader["Closed"]),
+                            ClosedDate = reader["ClosedDate"] != DBNull.Value ? Convert.ToDateTime(reader["ClosedDate"]) : null,
+                            IsApplyInterest = reader["IsApplyInterest"] != DBNull.Value && Convert.ToBoolean(reader["IsApplyInterest"]),
+                            ODLoanAccountNo = reader["ODLoanAccountNo"]?.ToString()
                         };
+
                         accounts.Add(account);
                     }
 
@@ -101,7 +110,8 @@ namespace BankingAPI.Endpoints
                 }
             });
 
-            // Get Transactions for Statement
+
+            // 🔹 Get Transaction Statement
             app.MapGet("/api/statement/transactions", async (
                 [FromQuery] int customerId,
                 [FromQuery] string accountType,
@@ -118,7 +128,8 @@ namespace BankingAPI.Endpoints
 
                     using var cmd = new SqlCommand("App_GetNewStatement", conn)
                     {
-                        CommandType = CommandType.StoredProcedure
+                        CommandType = CommandType.StoredProcedure,
+                        CommandTimeout = 200
                     };
 
                     cmd.Parameters.AddWithValue("@CustomerId", customerId);

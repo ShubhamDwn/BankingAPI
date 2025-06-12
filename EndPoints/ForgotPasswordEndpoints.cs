@@ -1,19 +1,18 @@
 ﻿using BankingAPI.Models;
 using BankingAPI.Services;
 using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
+
 
 public static class ForgotPasswordEndpoints
 {
     public static void MapForgotPasswordEndpoints(this WebApplication app)
     {
-        app.MapPost("/api/auth/forgotpassword", async (SignupRequest request, IConfiguration config) =>
+        app.MapPost("/api/auth/forgotpassword", async (ForgotPasswordRequest request, IConfiguration config) =>
         {
             if (string.IsNullOrWhiteSpace(request.Aadhaar) ||
                 string.IsNullOrWhiteSpace(request.Password))
             {
-                return Results.BadRequest(new SignupResponse
+                return Results.BadRequest(new ForgotPasswordResponse
                 {
                     Success = false,
                     Message = "Aadhaar and new password are required."
@@ -22,7 +21,7 @@ public static class ForgotPasswordEndpoints
 
             if (request.Aadhaar.Length != 12 || !long.TryParse(request.Aadhaar, out _))
             {
-                return Results.BadRequest(new SignupResponse
+                return Results.BadRequest(new ForgotPasswordResponse
                 {
                     Success = false,
                     Message = "Invalid Aadhaar number."
@@ -43,7 +42,7 @@ public static class ForgotPasswordEndpoints
                 int count = (int)await checkCmd.ExecuteScalarAsync();
                 if (count == 0)
                 {
-                    return Results.Ok(new SignupResponse
+                    return Results.Ok(new ForgotPasswordResponse
                     {
                         Success = false,
                         Message = "No account found with this Aadhaar number."
@@ -63,7 +62,7 @@ public static class ForgotPasswordEndpoints
 
                 if (rows > 0)
                 {
-                    return Results.Ok(new SignupResponse
+                    return Results.Ok(new ForgotPasswordResponse
                     {
                         Success = true,
                         Message = "Password reset successfully."
@@ -71,7 +70,7 @@ public static class ForgotPasswordEndpoints
                 }
                 else
                 {
-                    return Results.Ok(new SignupResponse
+                    return Results.Ok(new ForgotPasswordResponse
                     {
                         Success = false,
                         Message = "Failed to reset password."

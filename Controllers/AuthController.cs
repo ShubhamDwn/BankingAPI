@@ -1,4 +1,5 @@
 ﻿using BankingAPI.Models;
+using BankingAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
@@ -34,7 +35,7 @@ public class AuthController : ControllerBase
             string storedHashedPassword = reader["UserPassword"].ToString();
             int customerId = Convert.ToInt32(reader["CustomerId"]);
 
-            string hashedInputPassword = HashPassword(request.Password);
+            string hashedInputPassword = SecurityHelper.HashPassword(request.Password);
 
             if (storedHashedPassword == hashedInputPassword)
             {
@@ -53,20 +54,6 @@ public class AuthController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, new LoginResponse { Success = false, Message = ex.Message });
-        }
-    }
-
-    private string HashPassword(string password)
-    {
-        using (SHA256 sha = SHA256.Create())
-        {
-            byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
-            StringBuilder builder = new StringBuilder();
-
-            foreach (var b in bytes)
-                builder.Append(b.ToString("x2")); // convert byte to hex  
-
-            return builder.ToString();
         }
     }
 }
