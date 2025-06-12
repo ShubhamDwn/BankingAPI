@@ -51,56 +51,48 @@ namespace BankingAPI.Endpoints
             {
                 try
                 {
-                    var accounts = new List<AccountModel>();
+                var accounts = new List<AccountModel>();
 
-                    var accountTypeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-        {
-            { "SHARE", 1 },
-            { "SAVING", 2 },
-            { "FIXED", 3 },
-            { "LOAN", 4 },
-            { "RECCURING", 5 },
-            { "PIGMYAGENT", 6 },
-            { "PIGMY", 7 }
-        };
+                using var conn = new SqlConnection(config.GetConnectionString("DefaultConnection"));
+                await conn.OpenAsync();
 
-                    if (!accountTypeMap.TryGetValue(accountType.Trim().ToUpper(), out int acType))
-                        return Results.BadRequest($"Invalid account type: '{accountType}'");
+                using var cmd = new SqlCommand("App_GetCustomerAccount", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                    using var conn = new SqlConnection(config.GetConnectionString("DefaultConnection"));
-                    await conn.OpenAsync();
+                cmd.Parameters.AddWithValue("@CustomerId", (object?)customerId ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@MasterType", (object?)accountType ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@Closed", (object?)closed ?? DBNull.Value);
 
-                    using var cmd = new SqlCommand("App_GetCustomerAccount", conn)
+                using var reader = await cmd.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    var account = new AccountModel
                     {
-                        CommandType = CommandType.StoredProcedure
+                        PrimaryId = reader.GetInt32(reader.GetOrdinal("PrimaryId")),
+                        Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                        SubSchemeId = reader.GetInt32(reader.GetOrdinal("SubSchemeId")),
+                        PigmyAgentId = reader.GetInt32(reader.GetOrdinal("PigmyAgentId")),
+                        AccountNumber = reader.GetString(reader.GetOrdinal("AccountNumber")),
+                        OldAccountNumber = reader["OldAccountNumber"] as string,
+                        CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
+                        OpeningDate = reader["OpeningDate"] as DateTime?,
+                        ExpiryDate = reader["ExpiryDate"] as DateTime?,
+                        RateOfInterestId = reader["RateOfInterestId"] as int?,
+                        IAmount = reader["IAmount"] as decimal?,
+                        MaturityAmount = reader["MaturityAmount"] as decimal?,
+                        Installment = reader["Installment"] as decimal?,
+                        Closed = reader.GetBoolean(reader.GetOrdinal("Closed")),
+                        ClosedDate = reader["ClosedDate"] as DateTime?,
+                        IsApplyInterest = reader.GetBoolean(reader.GetOrdinal("IsApplyInterest")),
+                        ODLoanAccountNo = reader["ODLoanAccountNo"] as string,
+                        IsOverdueAccount = reader["IsOverdueAccount"] as bool?,
+                        DirectorName = reader["DirectorName"] as string,
+                        Balance = reader["Balance"] != DBNull.Value ? Convert.ToDecimal(reader["Balance"]) : 0
                     };
 
-                    cmd.Parameters.AddWithValue("@CustomerId", customerId);
-                    cmd.Parameters.AddWithValue("@AcType", acType);
-                    cmd.Parameters.AddWithValue("@DeviceId", deviceId);
-                    cmd.Parameters.AddWithValue("@Closed", closed);
-
-                    using var reader = await cmd.ExecuteReaderAsync();
-                    while (await reader.ReadAsync())
-                    {
-                        var account = new AccountModel
-                        {
-                            PrimaryId = reader["PrimaryId"] != DBNull.Value ? Convert.ToInt32(reader["PrimaryId"]) : -1,
-                            SubSchemeId = reader["SubSchemeId"] != DBNull.Value ? Convert.ToInt32(reader["SubSchemeId"]) : 0,
-                            PigmyAgentId = reader["PigmyAgentId"] != DBNull.Value ? Convert.ToInt32(reader["PigmyAgentId"]) : 0,
-                            AccountNumber = reader["AccountNumber"]?.ToString(),
-                            OldAccountNumber = reader["OldAccountNumber"]?.ToString(),
-                            CustomerId = reader["CustomerId"] != DBNull.Value ? Convert.ToInt32(reader["CustomerId"]) : 0,
-                            OpeningDate = reader["OpeningDate"] != DBNull.Value ? Convert.ToDateTime(reader["OpeningDate"]) : null,
-                            Balance = reader["Balance"] != DBNull.Value ? Convert.ToDecimal(reader["Balance"]) : 0,
-                            Closed = reader["Closed"] != DBNull.Value && Convert.ToBoolean(reader["Closed"]),
-                            ClosedDate = reader["ClosedDate"] != DBNull.Value ? Convert.ToDateTime(reader["ClosedDate"]) : null,
-                            IsApplyInterest = reader["IsApplyInterest"] != DBNull.Value && Convert.ToBoolean(reader["IsApplyInterest"]),
-                            ODLoanAccountNo = reader["ODLoanAccountNo"]?.ToString()
-                        };
-
-                        accounts.Add(account);
-                    }
+                    accounts.Add(account);
+                }
 
                     return Results.Ok(accounts);
                 }
