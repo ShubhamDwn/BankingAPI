@@ -236,8 +236,18 @@
         "IsRequired": true
       },
       {
-        "Name": "accountType",
-        "Type": "System.String",
+        "Name": "subSchemeId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "accountNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "pigmyAgentId",
+        "Type": "System.Int32",
         "IsRequired": true
       },
       {
@@ -249,6 +259,11 @@
         "Name": "toDate",
         "Type": "System.DateTime",
         "IsRequired": true
+      },
+      {
+        "Name": "deviceId",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [

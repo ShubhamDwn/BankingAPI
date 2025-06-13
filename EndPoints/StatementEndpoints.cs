@@ -121,13 +121,16 @@ namespace BankingAPI.Endpoints
             });
 
 
-            // 🔹 Get Transaction Statement
+            // 🔹 Get Transaction Statement with Full Parameter Support
             app.MapGet("/api/statement/transactions", async (
+                IConfiguration config,
                 [FromQuery] int customerId,
-                [FromQuery] string accountType,
+                [FromQuery] int subSchemeId,
+                [FromQuery] int accountNumber,
+                [FromQuery] int pigmyAgentId,
                 [FromQuery] DateTime fromDate,
                 [FromQuery] DateTime toDate,
-                IConfiguration config) =>
+                [FromQuery] string deviceId = "083ea3911295b82d") =>
             {
                 var transactions = new List<TransactionModel>();
 
@@ -143,7 +146,10 @@ namespace BankingAPI.Endpoints
                     };
 
                     cmd.Parameters.AddWithValue("@CustomerId", customerId);
-                    cmd.Parameters.AddWithValue("@AccountType", accountType);
+                    cmd.Parameters.AddWithValue("@SubSchemeId", subSchemeId);
+                    cmd.Parameters.AddWithValue("@AccountNumber", accountNumber);
+                    cmd.Parameters.AddWithValue("@PigmyAgentId", pigmyAgentId);
+                    cmd.Parameters.AddWithValue("@DeviceId", deviceId);
                     cmd.Parameters.AddWithValue("@FromDate", fromDate);
                     cmd.Parameters.AddWithValue("@ToDate", toDate);
 
@@ -152,9 +158,26 @@ namespace BankingAPI.Endpoints
                     {
                         transactions.Add(new TransactionModel
                         {
-                            Description = reader["Description"]?.ToString(),
-                            Amount = reader["Amount"] != DBNull.Value ? Convert.ToDecimal(reader["Amount"]) : 0,
-                            Date = reader["Date"] != DBNull.Value ? Convert.ToDateTime(reader["Date"]) : DateTime.MinValue
+                            PrimaryId = reader["PrimaryId"] != DBNull.Value ? Convert.ToInt32(reader["PrimaryId"]) : 0,
+                            TransactionDate = reader["TransactionDate"] != DBNull.Value ? Convert.ToDateTime(reader["TransactionDate"]) : DateTime.MinValue,
+                            SubSchemeId = reader["SubSchemeId"] != DBNull.Value ? Convert.ToInt32(reader["SubSchemeId"]) : 0,
+                            AccountNumber = reader["AccountNumber"]?.ToString(),
+                            ScrollNumber = reader["ScrollNumber"] != DBNull.Value ? Convert.ToInt32(reader["ScrollNumber"]) : 0,
+                            Narration = reader["Narration"]?.ToString(),
+                            TransactionType = reader["TransactionType"]?.ToString(),
+                            Deposite = reader["Deposite"] != DBNull.Value ? Convert.ToDecimal(reader["Deposite"]) : 0,
+                            Withdraw = reader["Withdraw"] != DBNull.Value ? Convert.ToDecimal(reader["Withdraw"]) : 0,
+                            Plain = reader["Plain"] != DBNull.Value ? Convert.ToDecimal(reader["Plain"]) : 0,
+                            PlainCr = reader["PlainCr"] != DBNull.Value ? Convert.ToDecimal(reader["PlainCr"]) : 0,
+                            PlainDr = reader["PlainDr"] != DBNull.Value ? Convert.ToDecimal(reader["PlainDr"]) : 0,
+                            Penalty = reader["Penalty"] != DBNull.Value ? Convert.ToDecimal(reader["Penalty"]) : 0,
+                            PenaltyCr = reader["PenaltyCr"] != DBNull.Value ? Convert.ToDecimal(reader["PenaltyCr"]) : 0,
+                            PenaltyDr = reader["PenaltyDr"] != DBNull.Value ? Convert.ToDecimal(reader["PenaltyDr"]) : 0,
+                            Payable = reader["Payable"] != DBNull.Value ? Convert.ToDecimal(reader["Payable"]) : 0,
+                            Receivable = reader["Receivable"] != DBNull.Value ? Convert.ToDecimal(reader["Receivable"]) : 0,
+                            Dividend = reader["Dividend"] != DBNull.Value ? Convert.ToDecimal(reader["Dividend"]) : 0,
+                            DrCr = reader["DrCr"]?.ToString(),
+                            Balance = reader["Balance"] != DBNull.Value ? Convert.ToDecimal(reader["Balance"]) : 0
                         });
                     }
 
@@ -165,6 +188,9 @@ namespace BankingAPI.Endpoints
                     return Results.Problem("Failed to fetch transaction statement: " + ex.Message);
                 }
             });
+
+
+
         }
     }
 }

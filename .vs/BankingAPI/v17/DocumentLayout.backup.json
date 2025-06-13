@@ -79,8 +79,7 @@
               "RelativeToolTip": "Properties\\launchSettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-13T05:50:10.701Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-13T05:50:10.701Z"
             },
             {
               "$type": "Document",
@@ -90,7 +89,7 @@
               "RelativeDocumentMoniker": "Models\\StatementResponse.cs",
               "ToolTip": "E:\\C#\\Repos\\BankingAPI\\Models\\StatementResponse.cs",
               "RelativeToolTip": "Models\\StatementResponse.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAA3wAwAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAACAAAAAAAAAAAAAYwDoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-13T05:49:49.34Z",
               "EditorCaption": ""
@@ -105,8 +104,7 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-13T05:47:49.906Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-13T05:47:49.906Z"
             },
             {
               "$type": "Document",
@@ -116,7 +114,7 @@
               "RelativeDocumentMoniker": "EndPoints\\StatementEndpoints.cs",
               "ToolTip": "E:\\C#\\Repos\\BankingAPI\\EndPoints\\StatementEndpoints.cs",
               "RelativeToolTip": "EndPoints\\StatementEndpoints.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAgwGsAAAB4AAAAAAAAAA==",
+              "ViewState": "AgIAAHgAAAAAAAAAAAApwIQAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-09T06:58:19.494Z",
               "EditorCaption": ""
@@ -167,8 +165,7 @@
               "RelativeToolTip": "EndPoints\\SignupEndpoints.cs",
               "ViewState": "AgIAACkAAAAAAAAAAAAgwGcAAABPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-07T11:10:20.776Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-07T11:10:20.776Z"
             },
             {
               "$type": "Document",
@@ -180,8 +177,7 @@
               "RelativeToolTip": "Services\\baseurl.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T05:40:02.592Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-11T05:40:02.592Z"
             }
           ]
         }
