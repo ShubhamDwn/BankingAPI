@@ -5,20 +5,29 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/auth/login": {
+    "/api/auth/signup": {
       "post": {
         "tags": [
-          "BankingAPI"
+          "Auth"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
+                "$ref": "#/components/schemas/SignupRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -27,20 +36,29 @@
         }
       }
     },
-    "/api/auth/signup": {
+    "/api/auth/login": {
       "post": {
         "tags": [
-          "BankingAPI"
+          "Auth"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SignupRequest"
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -52,7 +70,7 @@
     "/api/auth/forgotpassword": {
       "post": {
         "tags": [
-          "BankingAPI"
+          "Auth"
         ],
         "requestBody": {
           "content": {
@@ -60,9 +78,18 @@
               "schema": {
                 "$ref": "#/components/schemas/ForgotPasswordRequest"
               }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgotPasswordRequest"
+              }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -71,10 +98,96 @@
         }
       }
     },
-    "/api/home/{customerId}": {
+    "/api/Beneficiaries": {
       "get": {
         "tags": [
-          "BankingAPI"
+          "Beneficiaries"
+        ],
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Beneficiaries"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBeneficiaryRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBeneficiaryRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBeneficiaryRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Beneficiaries"
+        ],
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Home/{customerId}": {
+      "get": {
+        "tags": [
+          "Home"
         ],
         "parameters": [
           {
@@ -97,7 +210,7 @@
     "/api/statement/account-types/{customerId}": {
       "get": {
         "tags": [
-          "BankingAPI"
+          "Statement"
         ],
         "parameters": [
           {
@@ -120,13 +233,12 @@
     "/api/statement/accounts": {
       "get": {
         "tags": [
-          "BankingAPI"
+          "Statement"
         ],
         "parameters": [
           {
             "name": "customerId",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -135,7 +247,6 @@
           {
             "name": "accountType",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "string"
             }
@@ -168,13 +279,12 @@
     "/api/statement/transactions": {
       "get": {
         "tags": [
-          "BankingAPI"
+          "Statement"
         ],
         "parameters": [
           {
             "name": "customerId",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -183,7 +293,6 @@
           {
             "name": "subSchemeId",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -192,7 +301,6 @@
           {
             "name": "accountNumber",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -201,7 +309,6 @@
           {
             "name": "pigmyAgentId",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -210,7 +317,6 @@
           {
             "name": "fromDate",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "string",
               "format": "date-time"
@@ -219,7 +325,6 @@
           {
             "name": "toDate",
             "in": "query",
-            "required": true,
             "schema": {
               "type": "string",
               "format": "date-time"
@@ -231,86 +336,6 @@
             "schema": {
               "type": "string",
               "default": "083ea3911295b82d"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/beneficiaries": {
-      "get": {
-        "tags": [
-          "BankingAPI"
-        ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "accountNumber",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "BankingAPI"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddBeneficiaryRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "BankingAPI"
-        ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "accountNumber",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
             }
           }
         ],

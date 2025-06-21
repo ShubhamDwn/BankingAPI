@@ -5,6 +5,7 @@ using System.Data;
 
 namespace BankingAPI.Endpoints
 {
+    /*
     public static class StatementEndpoints
     {
         public static void MapStatementEndpoints(this IEndpointRouteBuilder app, IConfiguration config)
@@ -192,5 +193,5 @@ namespace BankingAPI.Endpoints
 
 
         }
-    }
+    }*/
 }

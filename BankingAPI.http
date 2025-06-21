@@ -1,6 +1,6 @@
-@BankingAPI_HostAddress = http://localhost:5164
+@BankingAPI_HostAddress = http://192.168.1.10:103/api
 
-GET {{BankingAPI_HostAddress}}/weatherforecast/
+GET {{BankingAPI_HostAddress}}/home/
 Accept: application/json
 
 ###

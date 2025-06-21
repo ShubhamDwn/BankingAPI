@@ -27,6 +27,7 @@ E:\C#\Repos\BankingAPI\obj\Release\net9.0\PubTmp\Out\Microsoft.IdentityModel.Pro
 E:\C#\Repos\BankingAPI\obj\Release\net9.0\PubTmp\Out\Microsoft.IdentityModel.Tokens.dll
 E:\C#\Repos\BankingAPI\obj\Release\net9.0\PubTmp\Out\Microsoft.OpenApi.dll
 E:\C#\Repos\BankingAPI\obj\Release\net9.0\PubTmp\Out\Microsoft.SqlServer.Server.dll
+E:\C#\Repos\BankingAPI\obj\Release\net9.0\PubTmp\Out\ServiceStack.Text.dll
 E:\C#\Repos\BankingAPI\obj\Release\net9.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 E:\C#\Repos\BankingAPI\obj\Release\net9.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\C#\Repos\BankingAPI\obj\Release\net9.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

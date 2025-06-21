@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 
 public static class ForgotPasswordEndpoints
 {
+    /*
     public static void MapForgotPasswordEndpoints(this WebApplication app)
     {
         app.MapPost("/api/auth/forgotpassword", async (ForgotPasswordRequest request, IConfiguration config) =>
@@ -82,6 +83,6 @@ public static class ForgotPasswordEndpoints
                 return Results.Problem($"Internal server error: {ex.Message}");
             }
         });
-    }
+    }*/
 }
 

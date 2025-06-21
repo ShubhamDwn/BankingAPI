@@ -1,10 +1,10 @@
 [
   {
-    "ContainingType": "ForgotPasswordEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapForgotPasswordEndpoints\u003Eb__0_0",
+    "ContainingType": "BankingAPI.Controllers.AuthController",
+    "Method": "ForgotPassword",
     "RelativePath": "api/auth/forgotpassword",
     "HttpMethod": "POST",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
@@ -13,20 +13,14 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "BankingAPI.Endpoints.LoginEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapLoginEndpoints\u003Eb__0_0",
+    "ContainingType": "BankingAPI.Controllers.AuthController",
+    "Method": "Login",
     "RelativePath": "api/auth/login",
     "HttpMethod": "POST",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
@@ -35,20 +29,14 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "SignupEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapSignupEndpoints\u003Eb__0_0",
+    "ContainingType": "BankingAPI.Controllers.AuthController",
+    "Method": "Signup",
     "RelativePath": "api/auth/signup",
     "HttpMethod": "POST",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
@@ -57,26 +45,20 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "BankingAPI.Endpoints.BeneficiaryEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapBeneficiaryEndpoints\u003Eb__0_0",
-    "RelativePath": "api/beneficiaries",
+    "ContainingType": "BankingAPI.Controllers.BeneficiariesController",
+    "Method": "GetBeneficiaries",
+    "RelativePath": "api/Beneficiaries",
     "HttpMethod": "GET",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "customerId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "accountNumber",
@@ -84,20 +66,14 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "BankingAPI.Endpoints.BeneficiaryEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapBeneficiaryEndpoints\u003Eb__0_1",
-    "RelativePath": "api/beneficiaries",
+    "ContainingType": "BankingAPI.Controllers.BeneficiariesController",
+    "Method": "AddBeneficiary",
+    "RelativePath": "api/Beneficiaries",
     "HttpMethod": "POST",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
@@ -106,47 +82,35 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "BankingAPI.Endpoints.BeneficiaryEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapBeneficiaryEndpoints\u003Eb__0_2",
-    "RelativePath": "api/beneficiaries",
+    "ContainingType": "BankingAPI.Controllers.BeneficiariesController",
+    "Method": "DeleteBeneficiary",
+    "RelativePath": "api/Beneficiaries",
     "HttpMethod": "DELETE",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "customerId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "accountNumber",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "BankingAPI.Endpoints.HomeEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003CMapHomeEndpoints\u003Eb__0",
-    "RelativePath": "api/home/{customerId:int}",
+    "ContainingType": "BankingAPI.Controllers.HomeController",
+    "Method": "GetCustomerHomeData",
+    "RelativePath": "api/Home/{customerId}",
     "HttpMethod": "GET",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
@@ -155,20 +119,14 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "BankingAPI.Endpoints.StatementEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003CMapStatementEndpoints\u003Eb__0",
-    "RelativePath": "api/statement/account-types/{customerId:int}",
+    "ContainingType": "BankingAPI.Controllers.StatementController",
+    "Method": "GetAccountTypes",
+    "RelativePath": "api/statement/account-types/{customerId}",
     "HttpMethod": "GET",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
@@ -177,31 +135,25 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "BankingAPI.Endpoints.StatementEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapStatementEndpoints\u003Eb__0_1",
+    "ContainingType": "BankingAPI.Controllers.StatementController",
+    "Method": "GetAccounts",
     "RelativePath": "api/statement/accounts",
     "HttpMethod": "GET",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "customerId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "accountType",
         "Type": "System.String",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "deviceId",
@@ -214,51 +166,45 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "BankingAPI.Endpoints.StatementEndpoints\u002B\u003C\u003Ec",
-    "Method": "\u003CMapStatementEndpoints\u003Eb__0_2",
+    "ContainingType": "BankingAPI.Controllers.StatementController",
+    "Method": "GetTransactions",
     "RelativePath": "api/statement/transactions",
     "HttpMethod": "GET",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "customerId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "subSchemeId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "accountNumber",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "pigmyAgentId",
         "Type": "System.Int32",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "fromDate",
         "Type": "System.DateTime",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "toDate",
         "Type": "System.DateTime",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "deviceId",
@@ -266,12 +212,6 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   }
 ]

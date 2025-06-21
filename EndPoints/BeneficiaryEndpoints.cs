@@ -5,6 +5,7 @@ using BankingAPI.Models;
 
 namespace BankingAPI.Endpoints
 {
+    /*
     public static class BeneficiaryEndpoints
     {
         public static void MapBeneficiaryEndpoints(this WebApplication app)
@@ -107,4 +108,5 @@ namespace BankingAPI.Endpoints
             });
         }
     }
+    */
 }

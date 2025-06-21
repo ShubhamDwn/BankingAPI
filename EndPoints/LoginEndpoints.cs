@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 
 namespace BankingAPI.Endpoints
 {
+    
     public static class LoginEndpoints
     {
         public static void MapLoginEndpoints(this WebApplication app)

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 
 public static class SignupEndpoints
 {
+    /*
     public static void MapSignupEndpoints(this WebApplication app)
     {
         app.MapPost("/api/auth/signup", async (SignupRequest request, IConfiguration config) =>
@@ -109,5 +110,5 @@ public static class SignupEndpoints
                 return Results.Problem($"Internal error: {ex.Message}");
             }
         });
-    }
+    }*/
 }
