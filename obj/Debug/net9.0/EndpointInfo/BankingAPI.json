@@ -184,6 +184,69 @@
         }
       }
     },
+    "/api/CustomerLedger/get-ledger": {
+      "get": {
+        "tags": [
+          "CustomerLedger"
+        ],
+        "parameters": [
+          {
+            "name": "transactionDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "isClosed",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerAccountLedgerModel"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerAccountLedgerModel"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerAccountLedgerModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Home/{customerId}": {
       "get": {
         "tags": [
@@ -389,6 +452,140 @@
             "nullable": true
           },
           "branchName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerAccountLedgerModel": {
+        "type": "object",
+        "properties": {
+          "transactionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "subSchemeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subSchemeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pigmyAgentId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "oldAccountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "openingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "asOnDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "receiptNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "periodInDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "periodInMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "periodInYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "rateOfInterestId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "iAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "maturityAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "installment": {
+            "type": "number",
+            "format": "double"
+          },
+          "closed": {
+            "type": "boolean"
+          },
+          "closedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isApplyInterest": {
+            "type": "boolean"
+          },
+          "lastInterestDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "odLoanAccountNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "isOverdueAccount": {
+            "type": "boolean"
+          },
+          "directorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "balance": {
+            "type": "number",
+            "format": "double"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "permanentAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "cellPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "areaName": {
             "type": "string",
             "nullable": true
           }

@@ -106,6 +106,42 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BankingAPI.Controllers.CustomerLedgerController",
+    "Method": "GetCustomerLedger",
+    "RelativePath": "api/CustomerLedger/get-ledger",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "transactionDate",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "customerId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "isClosed",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[BankingAPI.Models.CustomerAccountLedgerModel, BankingAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "BankingAPI.Controllers.HomeController",
     "Method": "GetCustomerHomeData",
     "RelativePath": "api/Home/{customerId}",
