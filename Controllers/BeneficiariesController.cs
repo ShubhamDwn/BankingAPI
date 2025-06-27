@@ -25,9 +25,11 @@ namespace BankingAPI.Controllers
             await conn.OpenAsync();
 
             var query = @"
-                SELECT BeneficiaryName, BankName, IFSC, AccountNumber, BranchName, BeneficiaryNickName, CustomerId
-                FROM BeneficiaryDetail
-                WHERE CustomerId = @CustomerId AND IsRegister = 1 AND Status = 1";
+    SELECT BeneficiaryName, BankName, IFSC, AccountNumber, BranchName, 
+           BeneficiaryNickName, CustomerId, MobileNo, Email
+    FROM BeneficiaryDetail
+    WHERE CustomerId = @CustomerId AND IsRegister = 1 AND Status = 1";
+
 
             if (accountNumber != null)
                 query += " AND AccountNumber = @AccountNumber";
@@ -44,10 +46,12 @@ namespace BankingAPI.Controllers
                 {
                     BeneficiaryName = reader["BeneficiaryName"].ToString(),
                     BankName = reader["BankName"].ToString(),
-                    IFSCCode = reader["IFSC"].ToString(),
+                    IFSC = reader["IFSC"].ToString(),
                     AccountNumber = reader["AccountNumber"].ToString(),
                     BranchName = reader["BranchName"].ToString(),
                     BeneficiaryNickName = reader["BeneficiaryNickName"].ToString(),
+                    MobileNo = reader["MobileNo"].ToString(),
+                    Email = reader["Email"].ToString(),
                     CustomerId = Convert.ToInt64(reader["CustomerId"])
                 });
             }

@@ -1,6 +1,22 @@
 [
   {
     "ContainingType": "BankingAPI.Controllers.AuthController",
+    "Method": "CheckDevice",
+    "RelativePath": "api/auth/check-device",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BankingAPI.Models.DeviceCheckRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.AuthController",
     "Method": "ForgotPassword",
     "RelativePath": "api/auth/forgotpassword",
     "HttpMethod": "POST",
@@ -107,20 +123,20 @@
   },
   {
     "ContainingType": "BankingAPI.Controllers.CustomerLedgerController",
-    "Method": "GetCustomerLedger",
-    "RelativePath": "api/CustomerLedger/get-ledger",
+    "Method": "GetCustomerAccountLedger",
+    "RelativePath": "api/CustomerLedger/account-ledger",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "transactionDate",
-        "Type": "System.DateTime",
+        "Name": "customerId",
+        "Type": "System.Int32",
         "IsRequired": false
       },
       {
-        "Name": "customerId",
-        "Type": "System.Int32",
+        "Name": "transactionDate",
+        "Type": "System.DateTime",
         "IsRequired": false
       },
       {
@@ -129,17 +145,7 @@
         "IsRequired": false
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[BankingAPI.Models.CustomerAccountLedgerModel, BankingAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "BankingAPI.Controllers.HomeController",

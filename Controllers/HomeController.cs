@@ -15,7 +15,6 @@ namespace BankingAPI.Controllers
         {
             _config = config;
         }
-
         [HttpGet("{customerId}")]
         public async Task<IActionResult> GetCustomerHomeData(int customerId)
         {
@@ -29,9 +28,9 @@ namespace BankingAPI.Controllers
 
                 // Get customer name
                 var cmd = new SqlCommand(@"
-                    SELECT FirstName, MiddleName, SurName 
-                    FROM Customer 
-                    WHERE CustomerId = @CustomerId", conn);
+            SELECT FirstName, MiddleName, SurName 
+            FROM Customer 
+            WHERE CustomerId = @CustomerId", conn);
 
                 cmd.Parameters.AddWithValue("@CustomerId", customerId);
 
@@ -47,10 +46,29 @@ namespace BankingAPI.Controllers
                 }
                 reader.Close();
 
-                // Get savings balance (dummy for now)
-                var balanceObj = 50000.00M;
+                // Get savings account with highest balance
+                var balanceCmd = new SqlCommand(@"
+                    SELECT TOP 1 Mast.AccountNumber, Mast.Balance
+                    FROM [INDO_vwMaster_CombineMaster](NULL, @CustomerId, 0) AS Mast
+                    INNER JOIN SubScheme ON Mast.SubSchemeId = SubScheme.Id
+                    WHERE SubScheme.ShortName = 'SAVING'
+                      AND Mast.Closed = 0
+                      AND Mast.CustomerId = @CustomerId
+                    ORDER BY Mast.Balance DESC", conn);
 
-                response.SavingsBalance = Convert.ToDecimal(balanceObj);
+                balanceCmd.Parameters.AddWithValue("@CustomerId", customerId);
+
+                using var balanceReader = await balanceCmd.ExecuteReaderAsync();
+                if (await balanceReader.ReadAsync())
+                {
+                    response.SavingsAccountNumber = balanceReader["AccountNumber"].ToString();
+                    response.SavingsBalance = Convert.ToDecimal(balanceReader["Balance"]);
+                }
+                else
+                {
+                    response.SavingsAccountNumber = null;
+                    response.SavingsBalance = 0;
+                }
 
                 return Ok(response);
             }
@@ -59,5 +77,6 @@ namespace BankingAPI.Controllers
                 return Problem("Failed to load customer data: " + ex.Message);
             }
         }
+
     }
 }

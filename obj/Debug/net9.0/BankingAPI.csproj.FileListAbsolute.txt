@@ -82,4 +82,3 @@ E:\C#\Repos\BankingAPI\obj\Debug\net9.0\rpswa.dswa.cache.json
 E:\C#\Repos\BankingAPI\obj\Debug\net9.0\rjimswa.dswa.cache.json
 E:\C#\Repos\BankingAPI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 E:\C#\Repos\BankingAPI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
-E:\C#\Repos\BankingAPI\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

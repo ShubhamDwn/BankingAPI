@@ -1,6 +1,6 @@
 namespace bank_demo.Services
 {
-    public class TransactionModel
+    public class UPITransactionModel
     {
         public string Description { get; set; }
         public decimal Amount { get; set; }

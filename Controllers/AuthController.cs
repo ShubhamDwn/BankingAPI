@@ -1,4 +1,5 @@
-﻿using BankingAPI.Models;
+﻿using Azure;
+using BankingAPI.Models;
 using BankingAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -20,23 +21,23 @@ namespace BankingAPI.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> Signup([FromBody] SignupRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Aadhaar) ||
-                string.IsNullOrWhiteSpace(request.Username) ||
-                string.IsNullOrWhiteSpace(request.Password))
+            if (string.IsNullOrWhiteSpace(request.CustomerId) ||
+                string.IsNullOrWhiteSpace(request.Pin) ||
+                string.IsNullOrWhiteSpace(request.DeviceId))
             {
                 return BadRequest(new SignupResponse
                 {
                     Success = false,
-                    Message = "All fields are required."
+                    Message = "CustomerId, PIN, and DeviceId are required."
                 });
             }
 
-            if (request.Aadhaar.Length != 12 || !long.TryParse(request.Aadhaar, out _))
+            if (request.Pin.Length != 4 || !int.TryParse(request.Pin, out _))
             {
                 return BadRequest(new SignupResponse
                 {
                     Success = false,
-                    Message = "Invalid Aadhaar number."
+                    Message = "PIN must be a 4-digit number."
                 });
             }
 
@@ -45,57 +46,58 @@ namespace BankingAPI.Controllers
                 using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
                 await conn.OpenAsync();
 
-                var checkAadhaarCmd = new SqlCommand(
-                    "SELECT UserName, UserPassword FROM Customer WHERE AdharNumber = @Aadhaar", conn);
-                checkAadhaarCmd.Parameters.AddWithValue("@Aadhaar", request.Aadhaar);
+                var checkCmd = new SqlCommand("SELECT UserPassword, IMEINo FROM Customer WHERE CustomerId = @CustomerId", conn);
+                checkCmd.Parameters.AddWithValue("@CustomerId", request.CustomerId);
 
-                using var reader = await checkAadhaarCmd.ExecuteReaderAsync();
-
+                using var reader = await checkCmd.ExecuteReaderAsync();
                 if (!await reader.ReadAsync())
                 {
                     return BadRequest(new SignupResponse
                     {
                         Success = false,
-                        Message = "No account associated with this Aadhaar number."
+                        Message = "Customer ID not found."
                     });
                 }
 
-                string existingUsername = reader["UserName"]?.ToString();
-                string existingPassword = reader["UserPassword"]?.ToString();
+                var existingPassword = reader["UserPassword"]?.ToString();
+                var existingDevice = reader["IMEINo"]?.ToString();
                 reader.Close();
 
-                if (!string.IsNullOrWhiteSpace(existingUsername) && !string.IsNullOrWhiteSpace(existingPassword))
+                if (!string.IsNullOrWhiteSpace(existingPassword) && !string.IsNullOrWhiteSpace(existingDevice))
                 {
-                    return BadRequest(new SignupResponse
+                    if (existingDevice != request.DeviceId)
                     {
-                        Success = false,
-                        Message = "Account already exists. Please login."
-                    });
+                        if (!request.ForceOverride)
+                        {
+                            return BadRequest(new SignupResponse
+                            {
+                                Success = false,
+                                Message = "Account already registered on another device.",
+                                DeviceGuid = existingDevice
+                            });
+                        }
+                        // else: allow override
+                    }
+                    else
+                    {
+                        return BadRequest(new SignupResponse
+                        {
+                            Success = false,
+                            Message = "Account already registered. Please login."
+                        });
+                    }
                 }
 
-                var checkUsernameCmd = new SqlCommand(
-                    "SELECT COUNT(*) FROM Customer WHERE UserName = @Username AND AdharNumber <> @Aadhaar", conn);
-                checkUsernameCmd.Parameters.AddWithValue("@Username", request.Username);
-                checkUsernameCmd.Parameters.AddWithValue("@Aadhaar", request.Aadhaar);
+                string hashedPin = SecurityHelper.HashPassword(request.Pin);
 
-                int usernameCount = (int)await checkUsernameCmd.ExecuteScalarAsync();
+                var updateCmd = new SqlCommand(@"
+            UPDATE Customer 
+            SET UserPassword = @UserPassword, IMEINo = @IMEINo 
+            WHERE CustomerId = @CustomerId", conn);
 
-                if (usernameCount > 0)
-                {
-                    return BadRequest(new SignupResponse
-                    {
-                        Success = false,
-                        Message = "Username already exists. Please choose another."
-                    });
-                }
-
-                string hashedPassword = SecurityHelper.HashPassword(request.Password);
-
-                var updateCmd = new SqlCommand(
-                    "UPDATE Customer SET UserName = @Username, UserPassword = @UserPassword WHERE AdharNumber = @Aadhaar", conn);
-                updateCmd.Parameters.AddWithValue("@Username", request.Username);
-                updateCmd.Parameters.AddWithValue("@UserPassword", hashedPassword);
-                updateCmd.Parameters.AddWithValue("@Aadhaar", request.Aadhaar);
+                updateCmd.Parameters.AddWithValue("@UserPassword", hashedPin);
+                updateCmd.Parameters.AddWithValue("@IMEINo", request.DeviceId);
+                updateCmd.Parameters.AddWithValue("@CustomerId", request.CustomerId);
 
                 int rows = await updateCmd.ExecuteNonQueryAsync();
 
@@ -104,7 +106,8 @@ namespace BankingAPI.Controllers
                     return Ok(new SignupResponse
                     {
                         Success = true,
-                        Message = "Signup successful. You can now login."
+                        Message = "Signup successful. You can now login.",
+                        DeviceGuid = request.DeviceId
                     });
                 }
                 else
@@ -118,16 +121,68 @@ namespace BankingAPI.Controllers
             }
         }
 
+
+        [HttpPost("check-device")]
+        public async Task<IActionResult> CheckDevice([FromBody] DeviceCheckRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.DeviceId))
+            {
+                return BadRequest(new { Success = false, Message = "DeviceId is required." });
+            }
+
+            try
+            {
+                using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+                await conn.OpenAsync();
+
+                var cmd = new SqlCommand(@"
+            SELECT CustomerId, FirstName, MiddleName, SurName 
+            FROM Customer 
+            WHERE IMEINo = @DeviceId", conn);
+                cmd.Parameters.AddWithValue("@DeviceId", request.DeviceId);
+
+                using var reader = await cmd.ExecuteReaderAsync();
+
+                if (!await reader.ReadAsync())
+                {
+                    return Ok(new DeviceCheckResponse
+                    {
+                        Success = false,
+                        Message = "No account found. Please sign up."
+                    });
+                }
+
+                var fullName = string.Join(" ",
+                    reader["FirstName"].ToString(),
+                    reader["MiddleName"].ToString(),
+                    reader["SurName"].ToString()).Trim();
+
+                return Ok(new DeviceCheckResponse
+                {
+                    Success = true,
+                    CustomerId = Convert.ToInt32(reader["CustomerId"]),
+                    FullName = fullName,
+                    Message = "Device recognized."
+                });
+            }
+            catch (Exception ex)
+            {
+                return Problem($"Error: {ex.Message}");
+            }
+        }
+
+
+
         // 🔹 POST: /api/auth/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
+            if (string.IsNullOrWhiteSpace(request.DeviceId) || string.IsNullOrWhiteSpace(request.Pin))
             {
                 return BadRequest(new LoginResponse
                 {
                     Success = false,
-                    Message = "Username or password cannot be empty."
+                    Message = "DeviceId and PIN are required."
                 });
             }
 
@@ -136,8 +191,9 @@ namespace BankingAPI.Controllers
                 using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
                 await conn.OpenAsync();
 
-                var cmd = new SqlCommand("SELECT UserPassword, CustomerId FROM Customer WHERE UserName = @username", conn);
-                cmd.Parameters.AddWithValue("@username", request.Username);
+                // Get customer record by device
+                var cmd = new SqlCommand("SELECT CustomerId, UserPassword FROM Customer WHERE IMEINo = @DeviceId", conn);
+                cmd.Parameters.AddWithValue("@DeviceId", request.DeviceId);
 
                 using var reader = await cmd.ExecuteReaderAsync();
 
@@ -146,28 +202,86 @@ namespace BankingAPI.Controllers
                     return Ok(new LoginResponse
                     {
                         Success = false,
-                        Message = "No user found with this username."
+                        Message = "No customer found for this device. Please sign up."
                     });
                 }
 
-                var storedHash = reader["UserPassword"].ToString();
+                var storedHash = reader["UserPassword"]?.ToString();
                 var customerId = Convert.ToInt32(reader["CustomerId"]);
-                var inputHash = SecurityHelper.HashPassword(request.Password);
 
+                if (string.IsNullOrWhiteSpace(storedHash))
+                {
+                    return Ok(new LoginResponse
+                    {
+                        Success = false,
+                        Message = "PIN not set. Please complete signup."
+                    });
+                }
+
+                // Compare hashed PIN
+                string inputHash = SecurityHelper.HashPassword(request.Pin);
                 bool isValid = storedHash == inputHash;
 
                 return Ok(new LoginResponse
                 {
                     Success = isValid,
-                    Message = isValid ? "Login successful" : "Invalid password",
+                    Message = isValid ? "Login successful." : "Invalid PIN.",
                     CustomerId = isValid ? customerId : 0
                 });
             }
             catch (Exception ex)
             {
-                return Problem($"Error: {ex.Message}");
+                return Problem($"Login error: {ex.Message}");
             }
         }
+
+        // 🔹 POST: /api/auth/logout-all
+        [HttpPost("logout-all")]
+        public async Task<IActionResult> LogoutAllDevices([FromBody] LogoutAllRequest request)
+        {
+            if (request.CustomerId <= 0)
+            {
+                return BadRequest(new LogoutAllResponse
+                {
+                    Success = false,
+                    Message = "Invalid Customer ID."
+                });
+            }
+
+            try
+            {
+                using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+                await conn.OpenAsync();
+
+                var updateCmd = new SqlCommand("UPDATE Customer SET IMEINo = NULL WHERE CustomerId = @CustomerId", conn);
+                updateCmd.Parameters.AddWithValue("@CustomerId", request.CustomerId);
+
+                int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
+
+                if (rowsAffected > 0)
+                {
+                    return Ok(new LogoutAllResponse
+                    {
+                        Success = true,
+                        Message = "Logged out from all devices successfully."
+                    });
+                }
+                else
+                {
+                    return Ok(new LogoutAllResponse
+                    {
+                        Success = false,
+                        Message = "No records updated. Customer may not exist."
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Problem($"Internal Server Error: {ex.Message}");
+            }
+        }
+
+
 
         // 🔹 POST: /api/auth/forgotpassword
         [HttpPost("forgotpassword")]
