@@ -26,9 +26,9 @@ namespace BankingAPI.Controllers
 
             var query = @"
     SELECT BeneficiaryName, BankName, IFSC, AccountNumber, BranchName, 
-           BeneficiaryNickName, CustomerId, MobileNo, Email
+           BeneficiaryNickName, Id, MobileNo, Email
     FROM BeneficiaryDetail
-    WHERE CustomerId = @CustomerId AND IsRegister = 1 AND Status = 1";
+    WHERE Id = @CustomerId AND IsRegister = 1 AND Status = 1";
 
 
             if (accountNumber != null)
@@ -80,7 +80,7 @@ namespace BankingAPI.Controllers
 
             string insertQuery = @"
                 INSERT INTO BeneficiaryDetail 
-                (CustomerId, BenificiaryCode, BeneficiaryName, BeneficiaryNickName, AccountNumber, IFSC, MobileNo, Email, BankName, BranchName, IsRegister, RegistrationDate, RegistrationStatus, Status, SysDate)
+                (Id, BenificiaryCode, BeneficiaryName, BeneficiaryNickName, AccountNumber, IFSC, MobileNo, Email, BankName, BranchName, IsRegister, RegistrationDate, RegistrationStatus, Status, SysDate)
                 VALUES 
                 (@CustomerId, @BenificiaryCode, @BeneficiaryName, @BeneficiaryNickName, @AccountNumber, @IFSC, @MobileNo, @Email, @BankName, @BranchName, 1, GETDATE(), 'Registered', 1, GETDATE())";
 
@@ -108,7 +108,7 @@ namespace BankingAPI.Controllers
             using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             await conn.OpenAsync();
 
-            string query = @"DELETE FROM BeneficiaryDetail WHERE CustomerId = @CustomerId AND AccountNumber = @AccountNumber";
+            string query = @"DELETE FROM BeneficiaryDetail WHERE Id = @CustomerId AND AccountNumber = @AccountNumber";
 
             using var cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@CustomerId", customerId);
