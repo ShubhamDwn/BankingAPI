@@ -21,14 +21,14 @@ namespace BankingAPI.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> Signup([FromBody] SignupRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.CustomerId) ||
+            if (request.Id <= 0 ||
                 string.IsNullOrWhiteSpace(request.Pin) ||
                 string.IsNullOrWhiteSpace(request.DeviceId))
             {
                 return BadRequest(new SignupResponse
                 {
                     Success = false,
-                    Message = "CustomerId, PIN, and DeviceId are required."
+                    Message = "Id, PIN, and DeviceId are required."
                 });
             }
 
@@ -46,8 +46,9 @@ namespace BankingAPI.Controllers
                 using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
                 await conn.OpenAsync();
 
-                var checkCmd = new SqlCommand("SELECT UserPassword, IMEINo FROM Customer WHERE CustomerId = @CustomerId", conn);
-                checkCmd.Parameters.AddWithValue("@CustomerId", request.CustomerId);
+                // 🔄 Change CustomerId to Id
+                var checkCmd = new SqlCommand("SELECT UserPassword, IMEINo FROM Customer WHERE Id = @Id", conn);
+                checkCmd.Parameters.AddWithValue("@Id", request.Id);
 
                 using var reader = await checkCmd.ExecuteReaderAsync();
                 if (!await reader.ReadAsync())
@@ -55,7 +56,7 @@ namespace BankingAPI.Controllers
                     return BadRequest(new SignupResponse
                     {
                         Success = false,
-                        Message = "Customer ID not found."
+                        Message = "User not found."
                     });
                 }
 
@@ -76,7 +77,6 @@ namespace BankingAPI.Controllers
                                 DeviceGuid = existingDevice
                             });
                         }
-                        // else: allow override
                     }
                     else
                     {
@@ -93,11 +93,11 @@ namespace BankingAPI.Controllers
                 var updateCmd = new SqlCommand(@"
             UPDATE Customer 
             SET UserPassword = @UserPassword, IMEINo = @IMEINo 
-            WHERE CustomerId = @CustomerId", conn);
+            WHERE Id = @Id", conn);   // 🔄 Updated here too
 
                 updateCmd.Parameters.AddWithValue("@UserPassword", hashedPin);
                 updateCmd.Parameters.AddWithValue("@IMEINo", request.DeviceId);
-                updateCmd.Parameters.AddWithValue("@CustomerId", request.CustomerId);
+                updateCmd.Parameters.AddWithValue("@Id", request.Id);
 
                 int rows = await updateCmd.ExecuteNonQueryAsync();
 
@@ -122,6 +122,7 @@ namespace BankingAPI.Controllers
         }
 
 
+
         [HttpPost("check-device")]
         public async Task<IActionResult> CheckDevice([FromBody] DeviceCheckRequest request)
         {
@@ -136,7 +137,7 @@ namespace BankingAPI.Controllers
                 await conn.OpenAsync();
 
                 var cmd = new SqlCommand(@"
-            SELECT CustomerId, FirstName, MiddleName, SurName 
+            SELECT Id, FirstName, MiddleName, SurName 
             FROM Customer 
             WHERE IMEINo = @DeviceId", conn);
                 cmd.Parameters.AddWithValue("@DeviceId", request.DeviceId);
@@ -160,7 +161,7 @@ namespace BankingAPI.Controllers
                 return Ok(new DeviceCheckResponse
                 {
                     Success = true,
-                    CustomerId = Convert.ToInt32(reader["CustomerId"]),
+                    Id = Convert.ToInt32(reader["Id"]),
                     FullName = fullName,
                     Message = "Device recognized."
                 });
@@ -192,7 +193,7 @@ namespace BankingAPI.Controllers
                 await conn.OpenAsync();
 
                 // Get customer record by device
-                var cmd = new SqlCommand("SELECT CustomerId, UserPassword FROM Customer WHERE IMEINo = @DeviceId", conn);
+                var cmd = new SqlCommand("SELECT Id, UserPassword FROM Customer WHERE IMEINo = @DeviceId", conn);
                 cmd.Parameters.AddWithValue("@DeviceId", request.DeviceId);
 
                 using var reader = await cmd.ExecuteReaderAsync();
@@ -207,7 +208,7 @@ namespace BankingAPI.Controllers
                 }
 
                 var storedHash = reader["UserPassword"]?.ToString();
-                var customerId = Convert.ToInt32(reader["CustomerId"]);
+                var customerId = Convert.ToInt32(reader["Id"]);
 
                 if (string.IsNullOrWhiteSpace(storedHash))
                 {
@@ -226,7 +227,7 @@ namespace BankingAPI.Controllers
                 {
                     Success = isValid,
                     Message = isValid ? "Login successful." : "Invalid PIN.",
-                    CustomerId = isValid ? customerId : 0
+                    Id = isValid ? customerId : 0
                 });
             }
             catch (Exception ex)
@@ -253,8 +254,8 @@ namespace BankingAPI.Controllers
                 using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
                 await conn.OpenAsync();
 
-                var updateCmd = new SqlCommand("UPDATE Customer SET IMEINo = NULL WHERE CustomerId = @CustomerId", conn);
-                updateCmd.Parameters.AddWithValue("@CustomerId", request.CustomerId);
+                var updateCmd = new SqlCommand("UPDATE Customer SET IMEINo = NULL WHERE Id = @Id", conn);
+                updateCmd.Parameters.AddWithValue("@Id", request.CustomerId);
 
                 int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
 
@@ -327,7 +328,7 @@ namespace BankingAPI.Controllers
                 string hashedPassword = SecurityHelper.HashPassword(request.Password);
 
                 var updateCmd = new SqlCommand(
-                    "UPDATE Customer SET UserPassword = @Password WHERE AdharNumber = @Aadhaar", conn);
+                   "UPDATE Customer SET UserPassword = @Password WHERE AdharNumber = @Aadhaar", conn);
                 updateCmd.Parameters.AddWithValue("@Password", hashedPassword);
                 updateCmd.Parameters.AddWithValue("@Aadhaar", request.Aadhaar);
 

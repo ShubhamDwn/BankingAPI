@@ -284,14 +284,14 @@
         }
       }
     },
-    "/api/Home/{customerId}": {
+    "/api/Home/{Id}": {
       "get": {
         "tags": [
           "Home"
         ],
         "parameters": [
           {
-            "name": "customerId",
+            "name": "Id",
             "in": "path",
             "required": true,
             "schema": {
@@ -445,6 +445,37 @@
           }
         }
       }
+    },
+    "/api/Transaction/neft-transaction": {
+      "post": {
+        "tags": [
+          "Transaction"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NeftTransactionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NeftTransactionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NeftTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -543,12 +574,89 @@
         },
         "additionalProperties": false
       },
+      "NeftTransactionRequest": {
+        "type": "object",
+        "properties": {
+          "subSchemeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "accountNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paymentTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "branchId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transactionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "neftAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "neftCharges": {
+            "type": "number",
+            "format": "double"
+          },
+          "benificiaryRemark": {
+            "type": "string",
+            "nullable": true
+          },
+          "benificiaryIFSCCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "benificiaryAccountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "benificiaryAccountHolderName": {
+            "type": "string",
+            "nullable": true
+          },
+          "benificiaryBranchName": {
+            "type": "string",
+            "nullable": true
+          },
+          "benificiaryBankName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isFileGenerate": {
+            "type": "boolean"
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "benificiaryMobileNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "benificiaryEmail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SignupRequest": {
         "type": "object",
         "properties": {
-          "customerId": {
-            "type": "string",
-            "nullable": true
+          "id": {
+            "type": "integer",
+            "format": "int32"
           },
           "pin": {
             "type": "string",

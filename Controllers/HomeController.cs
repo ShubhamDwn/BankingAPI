@@ -15,8 +15,8 @@ namespace BankingAPI.Controllers
         {
             _config = config;
         }
-        [HttpGet("{customerId}")]
-        public async Task<IActionResult> GetCustomerHomeData(int customerId)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetCustomerHomeData(int Id)
         {
             var response = new HomeResponse();
 
@@ -28,11 +28,11 @@ namespace BankingAPI.Controllers
 
                 // Get customer name
                 var cmd = new SqlCommand(@"
-            SELECT FirstName, MiddleName, SurName 
-            FROM Customer 
-            WHERE CustomerId = @CustomerId", conn);
+                    SELECT FirstName, MiddleName, SurName 
+                    FROM Customer 
+                    WHERE Id = @Id", conn);
 
-                cmd.Parameters.AddWithValue("@CustomerId", customerId);
+                cmd.Parameters.AddWithValue("@Id", Id);
 
                 using var reader = await cmd.ExecuteReaderAsync();
                 if (await reader.ReadAsync())
@@ -47,6 +47,12 @@ namespace BankingAPI.Controllers
                 reader.Close();
 
                 // Get savings account with highest balance
+                var getCustomerIdCmd = new SqlCommand("SELECT CustomerId FROM Customer WHERE Id = @Id", conn);
+                getCustomerIdCmd.Parameters.AddWithValue("@Id", Id);
+                var customerId = (int?)await getCustomerIdCmd.ExecuteScalarAsync();
+
+                if (customerId == null)
+                    return NotFound("Customer ID not found for this internal ID.");
                 var balanceCmd = new SqlCommand(@"
                     SELECT TOP 1 Mast.AccountNumber, Mast.Balance
                     FROM [INDO_vwMaster_CombineMaster](NULL, @CustomerId, 0) AS Mast

@@ -20,9 +20,9 @@ namespace BankingAPI.Controllers
 
         [HttpGet("account-ledger")]
         public async Task<IActionResult> GetCustomerAccountLedger(
-    [FromQuery] int customerId,
-    [FromQuery] DateTime transactionDate,
-    [FromQuery] bool isClosed = true)
+        [FromQuery] int customerId,
+        [FromQuery] DateTime transactionDate,
+        [FromQuery] bool isClosed = true)
         {
             try
             {
