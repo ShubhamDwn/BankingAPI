@@ -16,107 +16,102 @@ namespace BankingAPI.Controllers
             _config = config;
         }
 
-        // 🔹 GET Beneficiaries (All or One)
-        [HttpGet]
-        public async Task<IActionResult> GetBeneficiaries([FromQuery] int customerId, [FromQuery] string? accountNumber)
+        // 🔹 POST: Add Beneficiary using Stored Procedure
+        [HttpPost("add")]
+        public async Task<IActionResult> AddBeneficiary([FromBody] AddBeneficiaryRequest model)
+        {
+            if (model.AccountNumber != model.ConfirmAccountNumber)
+                return BadRequest(new { success = false, message = "Account numbers do not match." });
+
+            try
+            {
+                using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+                await conn.OpenAsync();
+
+                using var cmd = new SqlCommand("App_PostBeneficiaryDetails", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@DeviceId", model.DeviceId ?? "111");
+                cmd.Parameters.AddWithValue("@CustomerId", model.CustomerId);
+                cmd.Parameters.AddWithValue("@beneficiarycode", model.AccountNumber + model.IFSC);
+                cmd.Parameters.AddWithValue("@BeneficiaryName", model.BeneficiaryName ?? "");
+                cmd.Parameters.AddWithValue("@BeneficiaryNickName", model.BeneficiaryNickName ?? "");
+                cmd.Parameters.AddWithValue("@AccountNumber", model.AccountNumber ?? "");
+                cmd.Parameters.AddWithValue("@IFSC", model.IFSC ?? "");
+                cmd.Parameters.AddWithValue("@MobileNo", model.MobileNo ?? "");
+                cmd.Parameters.AddWithValue("@Email", model.Email ?? "");
+                cmd.Parameters.AddWithValue("@BankName", model.BankName ?? "");
+                cmd.Parameters.AddWithValue("@BranchName", model.BranchName ?? "");
+                cmd.Parameters.AddWithValue("@RegFrom", model.RegFrom ?? "Phone");
+
+                await cmd.ExecuteNonQueryAsync();
+
+                return Ok(new { success = true, message = "Beneficiary added successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return Problem("Failed to add beneficiary: " + ex.Message);
+            }
+        }
+
+        // 🔹 POST: List All Active Beneficiaries for a Customer
+        [HttpPost("list")]
+        public async Task<IActionResult> GetBeneficiaries([FromBody] BeneficiaryListRequest model)
         {
             var beneficiaries = new List<object>();
             using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             await conn.OpenAsync();
 
             var query = @"
-    SELECT BeneficiaryName, BankName, IFSC, AccountNumber, BranchName, 
-           BeneficiaryNickName, Id, MobileNo, Email
-    FROM BeneficiaryDetail
-    WHERE Id = @CustomerId AND IsRegister = 1 AND Status = 1";
-
-
-            if (accountNumber != null)
-                query += " AND AccountNumber = @AccountNumber";
+                SELECT Id, BenificiaryCode, BeneficiaryName, BankName, IFSC, AccountNumber, BranchName, 
+                       BeneficiaryNickName, MobileNo, Email
+                FROM BeneficiaryDetail
+                WHERE CustomerId = @CustomerId AND Status = 1";
 
             using var cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@CustomerId", customerId);
-            if (accountNumber != null)
-                cmd.Parameters.AddWithValue("@AccountNumber", accountNumber);
+            cmd.Parameters.AddWithValue("@CustomerId", model.CustomerId);
 
             using var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
                 beneficiaries.Add(new
                 {
-                    BeneficiaryName = reader["BeneficiaryName"].ToString(),
-                    BankName = reader["BankName"].ToString(),
-                    IFSC = reader["IFSC"].ToString(),
-                    AccountNumber = reader["AccountNumber"].ToString(),
-                    BranchName = reader["BranchName"].ToString(),
-                    BeneficiaryNickName = reader["BeneficiaryNickName"].ToString(),
-                    MobileNo = reader["MobileNo"].ToString(),
-                    Email = reader["Email"].ToString(),
-                    CustomerId = Convert.ToInt64(reader["CustomerId"])
+                    Id = Convert.ToInt32(reader["Id"]),
+                    BeneficiaryCode = reader["BenificiaryCode"]?.ToString(),
+                    BeneficiaryName = reader["BeneficiaryName"]?.ToString(),
+                    BankName = reader["BankName"]?.ToString(),
+                    IFSC = reader["IFSC"]?.ToString(),
+                    AccountNumber = reader["AccountNumber"]?.ToString(),
+                    BranchName = reader["BranchName"]?.ToString(),
+                    BeneficiaryNickName = reader["BeneficiaryNickName"]?.ToString(),
+                    MobileNo = reader["MobileNo"]?.ToString(),
+                    Email = reader["Email"]?.ToString()
                 });
             }
 
             return Ok(beneficiaries);
         }
 
-        // 🔹 POST Add Beneficiary
-        [HttpPost]
-        public async Task<IActionResult> AddBeneficiary([FromBody] AddBeneficiaryRequest model)
-        {
-            if (model.AccountNumber != model.ConfirmAccountNumber)
-                return BadRequest(new { success = false, message = "Account numbers do not match." });
-
-            using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
-            await conn.OpenAsync();
-
-            string checkQuery = @"SELECT COUNT(*) FROM BeneficiaryDetail WHERE CustomerId = @CustomerId AND AccountNumber = @AccountNumber";
-            using var checkCmd = new SqlCommand(checkQuery, conn);
-            checkCmd.Parameters.AddWithValue("@CustomerId", model.CustomerId);
-            checkCmd.Parameters.AddWithValue("@AccountNumber", model.AccountNumber);
-
-            int exists = (int)(await checkCmd.ExecuteScalarAsync() ?? 0);
-            if (exists > 0)
-                return BadRequest(new { success = false, message = "This beneficiary already exists." });
-
-            string insertQuery = @"
-                INSERT INTO BeneficiaryDetail 
-                (Id, BenificiaryCode, BeneficiaryName, BeneficiaryNickName, AccountNumber, IFSC, MobileNo, Email, BankName, BranchName, IsRegister, RegistrationDate, RegistrationStatus, Status, SysDate)
-                VALUES 
-                (@CustomerId, @BenificiaryCode, @BeneficiaryName, @BeneficiaryNickName, @AccountNumber, @IFSC, @MobileNo, @Email, @BankName, @BranchName, 1, GETDATE(), 'Registered', 1, GETDATE())";
-
-            using var insertCmd = new SqlCommand(insertQuery, conn);
-            insertCmd.Parameters.AddWithValue("@CustomerId", model.CustomerId);
-            insertCmd.Parameters.AddWithValue("@BenificiaryCode", model.AccountNumber + model.IFSC);
-            insertCmd.Parameters.AddWithValue("@BeneficiaryName", model.BeneficiaryName);
-            insertCmd.Parameters.AddWithValue("@BeneficiaryNickName", model.BeneficiaryNickName ?? "");
-            insertCmd.Parameters.AddWithValue("@AccountNumber", model.AccountNumber);
-            insertCmd.Parameters.AddWithValue("@IFSC", model.IFSC);
-            insertCmd.Parameters.AddWithValue("@MobileNo", model.MobileNo);
-            insertCmd.Parameters.AddWithValue("@Email", model.Email);
-            insertCmd.Parameters.AddWithValue("@BankName", model.BankName);
-            insertCmd.Parameters.AddWithValue("@BranchName", model.BranchName);
-
-            await insertCmd.ExecuteNonQueryAsync();
-
-            return Ok(new { success = true, message = "Beneficiary added successfully!" });
-        }
-
-        // 🔹 DELETE Beneficiary
-        [HttpDelete]
-        public async Task<IActionResult> DeleteBeneficiary([FromQuery] int customerId, [FromQuery] int accountNumber)
+        // 🔹 POST: Soft Delete Beneficiary
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeleteBeneficiary([FromBody] BeneficiaryDeleteRequest model)
         {
             using var conn = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             await conn.OpenAsync();
 
-            string query = @"DELETE FROM BeneficiaryDetail WHERE Id = @CustomerId AND AccountNumber = @AccountNumber";
+            string query = @"UPDATE BeneficiaryDetail 
+                             SET Status = 0 
+                             WHERE CustomerId = @CustomerId AND AccountNumber = @BeneficiaryAccountNumber";
 
             using var cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@CustomerId", customerId);
-            cmd.Parameters.AddWithValue("@AccountNumber", accountNumber);
+            cmd.Parameters.AddWithValue("@CustomerId", model.CustomerId);
+            cmd.Parameters.AddWithValue("@BeneficiaryAccountNumber", model.BeneficiaryAccountNumber);
 
             int rows = await cmd.ExecuteNonQueryAsync();
             if (rows > 0)
-                return Ok(new { success = true, message = "Beneficiary deleted." });
+                return Ok(new { success = true, message = "Beneficiary deleted (marked inactive)." });
 
             return NotFound(new { success = false, message = "Beneficiary not found." });
         }

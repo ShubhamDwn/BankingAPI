@@ -1,5 +1,115 @@
 [
   {
+    "ContainingType": "BankingAPI.Controllers.AdvertisementsController",
+    "Method": "DeleteLogo",
+    "RelativePath": "api/Advertisements/delete-logo",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.AdvertisementsController",
+    "Method": "DeletePopup",
+    "RelativePath": "api/Advertisements/delete-popup",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.AdvertisementsController",
+    "Method": "DeleteAdImage",
+    "RelativePath": "api/Advertisements/delete/{fileName}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fileName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.AdvertisementsController",
+    "Method": "GetAllAdImages",
+    "RelativePath": "api/Advertisements/list",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.AdvertisementsController",
+    "Method": "SetPopupDuration",
+    "RelativePath": "api/Advertisements/set-popup-duration",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "hours",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.AdvertisementsController",
+    "Method": "UploadAdImage",
+    "RelativePath": "api/Advertisements/upload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.AdvertisementsController",
+    "Method": "UploadLogo",
+    "RelativePath": "api/Advertisements/upload-logo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.AdvertisementsController",
+    "Method": "UploadPopup",
+    "RelativePath": "api/Advertisements/upload-popup",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "popupFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BankingAPI.Controllers.AuthController",
     "Method": "CheckDevice",
     "RelativePath": "api/auth/check-device",
@@ -81,29 +191,8 @@
   },
   {
     "ContainingType": "BankingAPI.Controllers.BeneficiariesController",
-    "Method": "GetBeneficiaries",
-    "RelativePath": "api/Beneficiaries",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "customerId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "accountNumber",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "BankingAPI.Controllers.BeneficiariesController",
     "Method": "AddBeneficiary",
-    "RelativePath": "api/Beneficiaries",
+    "RelativePath": "api/Beneficiaries/add",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -119,20 +208,31 @@
   {
     "ContainingType": "BankingAPI.Controllers.BeneficiariesController",
     "Method": "DeleteBeneficiary",
-    "RelativePath": "api/Beneficiaries",
-    "HttpMethod": "DELETE",
+    "RelativePath": "api/Beneficiaries/delete",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "customerId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
+        "Name": "model",
+        "Type": "BankingAPI.Models.BeneficiaryDeleteRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.BeneficiariesController",
+    "Method": "GetBeneficiaries",
+    "RelativePath": "api/Beneficiaries/list",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Name": "accountNumber",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "model",
+        "Type": "BankingAPI.Models.BeneficiaryListRequest",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -267,6 +367,27 @@
       {
         "Name": "deviceId",
         "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BankingAPI.Controllers.TransactionController",
+    "Method": "GetNeftTransactionHistory",
+    "RelativePath": "api/Transaction/neft-history",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "customerId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "accountNumber",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],

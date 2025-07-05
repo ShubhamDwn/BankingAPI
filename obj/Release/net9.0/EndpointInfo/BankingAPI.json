@@ -5,6 +5,192 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/Advertisements/upload": {
+      "post": {
+        "tags": [
+          "Advertisements"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "image": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Advertisements/list": {
+      "get": {
+        "tags": [
+          "Advertisements"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Advertisements/delete/{fileName}": {
+      "delete": {
+        "tags": [
+          "Advertisements"
+        ],
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Advertisements/upload-popup": {
+      "post": {
+        "tags": [
+          "Advertisements"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "popupFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "popupFile": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Advertisements/delete-popup": {
+      "delete": {
+        "tags": [
+          "Advertisements"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Advertisements/set-popup-duration": {
+      "post": {
+        "tags": [
+          "Advertisements"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "hours": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "hours": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Advertisements/upload-logo": {
+      "post": {
+        "tags": [
+          "Advertisements"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "image": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Advertisements/delete-logo": {
+      "delete": {
+        "tags": [
+          "Advertisements"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/auth/signup": {
       "post": {
         "tags": [
@@ -160,34 +346,7 @@
         }
       }
     },
-    "/api/Beneficiaries": {
-      "get": {
-        "tags": [
-          "Beneficiaries"
-        ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "accountNumber",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+    "/api/Beneficiaries/add": {
       "post": {
         "tags": [
           "Beneficiaries"
@@ -216,29 +375,63 @@
             "description": "OK"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/api/Beneficiaries/list": {
+      "post": {
         "tags": [
           "Beneficiaries"
         ],
-        "parameters": [
-          {
-            "name": "customerId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "accountNumber",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BeneficiaryListRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BeneficiaryListRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BeneficiaryListRequest"
+              }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Beneficiaries/delete": {
+      "post": {
+        "tags": [
+          "Beneficiaries"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BeneficiaryDeleteRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BeneficiaryDeleteRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BeneficiaryDeleteRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -476,6 +669,36 @@
           }
         }
       }
+    },
+    "/api/Transaction/neft-history": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -496,20 +719,20 @@
             "nullable": true
           },
           "accountNumber": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "nullable": true
           },
           "confirmAccountNumber": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "nullable": true
           },
           "ifsc": {
             "type": "string",
             "nullable": true
           },
           "mobileNo": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "nullable": true
           },
           "email": {
             "type": "string",
@@ -522,6 +745,38 @@
           "branchName": {
             "type": "string",
             "nullable": true
+          },
+          "deviceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "regFrom": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BeneficiaryDeleteRequest": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "beneficiaryAccountNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BeneficiaryListRequest": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "integer",
+            "format": "int64"
           }
         },
         "additionalProperties": false
@@ -583,7 +838,7 @@
           },
           "accountNumber": {
             "type": "integer",
-            "format": "int32"
+            "format": "int64"
           },
           "customerId": {
             "type": "integer",

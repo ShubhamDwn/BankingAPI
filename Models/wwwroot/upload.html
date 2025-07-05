@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Advertisement Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ✅ Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .card {
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="mb-4 text-center">🛠️ Admin – Advertisement Manager</h2>
+
+        <!-- 🏦 Upload Bank Logo -->
+        <div class="card p-4 mb-5">
+            <h5>🏦 Upload Bank Logo</h5>
+            <form id="logoUploadForm" enctype="multipart/form-data">
+                <div class="row align-items-center">
+                    <div class="col-md-8 mb-3">
+                        <input type="file" name="image" id="logoInput" class="form-control" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button type="submit" class="btn btn-success w-100">Upload Logo</button>
+                    </div>
+                </div>
+            </form>
+            <div class="text-center mt-3">
+                <h6>📷 Current Logo Preview:</h6>
+                <img id="logoPreview" src="/logos/bank_logo.png" alt="Bank Logo" style="height: 100px; object-fit: contain; border: 1px solid #ddd; padding: 5px; border-radius: 5px;" />
+            </div>
+            <div class="text-center mt-3">
+                <button onclick="deleteLogo()" class="btn btn-outline-danger">🗑 Delete Logo</button>
+            </div>
+        </div>
+
+
+        <!-- Upload Form -->
+        <div class="card p-4 mb-5">
+            <h5>📤 Upload New Advertisement</h5>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="row align-items-center">
+                    <div class="col-md-8 mb-3">
+                        <input type="file" name="image" id="imageInput" class="form-control" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Upload</button>
+                    </div>
+                </div>
+            </form>
+            <div id="uploadResult" class="text-muted small"></div>
+        </div>
+
+        <!-- Popup Upload Form -->
+        <div class="card p-4 mb-5">
+            <h5>🚀 Upload Startup Popup</h5>
+            <form id="popupForm" enctype="multipart/form-data">
+                <div class="row align-items-center">
+                    <div class="col-md-8 mb-3">
+                        <input type="file" name="popupFile" id="popupInput" class="form-control" required />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button type="submit" class="btn btn-warning w-100">Upload Popup</button>
+                    </div>
+                </div>
+                <small class="text-muted">Upload <b>popup.jpg</b> or <b>popup.txt</b></small>
+            </form>
+        </div>
+
+        <!-- Popup Settings -->
+        <div class="card p-4 mb-5">
+            <h5>⚙️ Popup Settings</h5>
+            <form id="durationForm">
+                <div class="row align-items-center">
+                    <div class="col-md-8 mb-3">
+                        <select id="durationSelect" class="form-select">
+                            <option value="24">24 hours</option>
+                            <option value="72">3 days</option>
+                            <option value="168">1 week</option>
+                            <option value="720">1 month</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button type="submit" class="btn btn-info w-100">Set Visibility</button>
+                    </div>
+                </div>
+            </form>
+            <button onclick="deletePopup()" class="btn btn-outline-danger">🗑 Delete Popup</button>
+        </div>
+
+        <!-- Gallery -->
+        <div>
+            <h5>🖼️ Existing Advertisements</h5>
+            <div class="row" id="adList"></div>
+        </div>
+    </div>
+
+    <!-- Toast for alerts -->
+    <div class="toast align-items-center text-bg-success border-0" id="toastSuccess" role="alert">
+        <div class="d-flex">
+            <div class="toast-body" id="toastMsg">Action completed successfully.</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+
+    <!-- Bootstrap + JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const uploadForm = document.getElementById('uploadForm');
+        const popupForm = document.getElementById('popupForm');
+        const adList = document.getElementById('adList');
+        const toastElement = document.getElementById('toastSuccess');
+        const toastMsg = document.getElementById('toastMsg');
+        const toast = new bootstrap.Toast(toastElement);
+
+        // Upload logo
+        document.getElementById("logoUploadForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById("logoInput");
+            formData.append("image", fileInput.files[0]);
+
+            const res = await fetch('/api/advertisements/upload-logo', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (res.ok) {
+                showToast("✅ Logo uploaded!");
+                document.getElementById("logoInput").value = "";
+                loadLogoPreview();
+            } else {
+                const err = await res.text();
+                alert("❌ Upload failed: " + err);
+            }
+        });
+
+        // Delete logo
+        async function deleteLogo() {
+            if (!confirm("Are you sure you want to delete the logo?")) return;
+
+            const res = await fetch('/api/advertisements/delete-logo', {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                showToast("🗑️ Logo deleted.");
+                document.getElementById("logoPreview").src = "";
+            } else {
+                const err = await res.text();
+                alert("❌ Delete failed: " + err);
+            }
+        }
+
+        // Load logo preview on page load
+        function loadLogoPreview() {
+            const logoImg = document.getElementById("logoPreview");
+            logoImg.src = "/logos/bank_logo.png?" + new Date().getTime(); // bust cache
+        }
+
+        // Run once at startup
+        loadLogoPreview();
+
+
+        // Load ad images
+        async function fetchAds() {
+            adList.innerHTML = '<p class="text-muted">Loading...</p>';
+            const res = await fetch('/api/advertisements/list');
+            const ads = await res.json();
+            adList.innerHTML = "";
+
+            ads.forEach(url => {
+                const fileName = url.split('/').pop();
+
+                const col = document.createElement('div');
+                col.className = 'col-md-3 mb-4';
+
+                col.innerHTML = `
+                            <div class="card h-100">
+                                <img src="${url}" class="card-img-top" alt="${fileName}">
+                                <div class="card-body text-center">
+                                    <button class="btn btn-danger btn-sm" onclick="deleteImage('${fileName}')">Delete</button>
+                                </div>
+                            </div>
+                        `;
+
+                adList.appendChild(col);
+            });
+        }
+
+        // Upload image
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(uploadForm);
+
+            const res = await fetch('/api/advertisements/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (res.ok) {
+                showToast("✅ Upload successful!");
+                uploadForm.reset();
+                fetchAds();
+            } else {
+                const err = await res.text();
+                alert("❌ Upload failed: " + err);
+            }
+        });
+
+        // Upload popup
+        popupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(popupForm);
+
+            const res = await fetch('/api/advertisements/upload-popup', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (res.ok) {
+                showToast("🚀 Popup uploaded!");
+                popupForm.reset();
+            } else {
+                const err = await res.text();
+                alert("❌ Upload failed: " + err);
+            }
+        });
+
+        // Delete image
+        async function deleteImage(fileName) {
+            if (!confirm(`Are you sure you want to delete "${fileName}"?`)) return;
+
+            const res = await fetch(`/api/advertisements/delete/${fileName}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                showToast(`🗑️ "${fileName}" deleted.`);
+                fetchAds();
+            } else {
+                const err = await res.text();
+                alert("❌ Delete failed: " + err);
+            }
+        }
+
+        // Delete popup
+        async function deletePopup() {
+            if (!confirm("Are you sure you want to delete the popup?")) return;
+
+            const res = await fetch('/api/advertisements/delete-popup', {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                showToast("🗑️ Popup deleted.");
+            } else {
+                const err = await res.text();
+                alert("❌ Delete failed: " + err);
+            }
+        }
+
+        // Set popup duration
+        document.getElementById('durationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const hours = document.getElementById('durationSelect').value;
+            const formData = new FormData();
+            formData.append('hours', hours);
+
+            const res = await fetch('/api/advertisements/set-popup-duration', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (res.ok) {
+                showToast("⏱️ Popup duration set.");
+            } else {
+                const err = await res.text();
+                alert("❌ Failed to set duration: " + err);
+            }
+        });
+
+        function showToast(message) {
+            toastMsg.textContent = message;
+            toast.show();
+        }
+
+        // Initial load
+        fetchAds();
+    </script>
+</body>
+</html>

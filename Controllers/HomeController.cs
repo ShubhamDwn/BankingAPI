@@ -47,9 +47,9 @@ namespace BankingAPI.Controllers
                 reader.Close();
 
                 // Get savings account with highest balance
-                var getCustomerIdCmd = new SqlCommand("SELECT CustomerId FROM Customer WHERE Id = @Id", conn);
-                getCustomerIdCmd.Parameters.AddWithValue("@Id", Id);
-                var customerId = (int?)await getCustomerIdCmd.ExecuteScalarAsync();
+                //var getCustomerIdCmd = new SqlCommand("SELECT CustomerId FROM Customer WHERE Id = @Id", conn);
+                //getCustomerIdCmd.Parameters.AddWithValue("@Id", Id);
+                var customerId = Id;
 
                 if (customerId == null)
                     return NotFound("Customer ID not found for this internal ID.");

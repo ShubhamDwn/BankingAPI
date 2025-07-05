@@ -1,6 +1,7 @@
 E:\C#\Repos\BankingApi\obj\Release\net9.0\PubTmp\Out\BankingAPI.exe
 E:\C#\Repos\BankingApi\obj\Release\net9.0\PubTmp\Out\appsettings.Development.json
 E:\C#\Repos\BankingApi\obj\Release\net9.0\PubTmp\Out\appsettings.json
+E:\C#\Repos\BankingApi\obj\Release\net9.0\PubTmp\Out\Models\wwwroot\ads\popup.meta.json
 E:\C#\Repos\BankingApi\obj\Release\net9.0\PubTmp\Out\BankingAPI.dll
 E:\C#\Repos\BankingApi\obj\Release\net9.0\PubTmp\Out\BankingAPI.deps.json
 E:\C#\Repos\BankingApi\obj\Release\net9.0\PubTmp\Out\BankingAPI.runtimeconfig.json
