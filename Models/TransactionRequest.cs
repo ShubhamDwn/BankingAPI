@@ -41,7 +41,7 @@ namespace BankingAPI.Models
         public string BenificiaryIFSCCode { get; set; }
 
         [Required(AllowEmptyStrings = true)]
-        public string BenificiaryRemark { get; set; };
+        public string BenificiaryRemark { get; set; }
 
         public string UniqueTransactionId { get; set; }
         public string UserName { get; set; }
